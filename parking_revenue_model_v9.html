@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parking Fee Revenue Model — Vanier College MEC 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;color:#222;background:#ebebeb;padding:2rem 1rem;font-size:14px}
+.container{max-width:1100px;margin:0 auto;background:#fff;border-radius:12px;border:1px solid #ddd;padding:2rem}
+.masthead{background:#3C3C3C;border-radius:8px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.masthead-left{display:flex;align-items:center;gap:14px}
+.logo-bar{width:5px;height:44px;background:#C8102E;border-radius:2px;flex-shrink:0}
+.masthead-title{font-size:16px;font-weight:bold;color:#fff}
+.masthead-sub{font-size:12px;color:#aaa;margin-top:3px}
+.masthead-badge{background:#C8102E;color:#fff;font-size:11px;font-weight:bold;padding:5px 12px;border-radius:6px;white-space:nowrap}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.25rem}
+.ctrl{background:#fafafa;border:1px solid #e0e0e0;border-radius:10px;padding:1rem 1.25rem}
+.ctrl-lbl{font-size:11px;font-weight:bold;color:#666;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ctrl-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.rg{display:flex;flex-direction:column;gap:8px}
+.rg label{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;color:#333}
+.rg input{accent-color:#C8102E;width:15px;height:15px}
+.badge-rec{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;margin-left:6px;background:#C8102E;color:#fff;font-weight:bold}
+.badge-sq{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;margin-left:6px;background:#888;color:#fff;font-weight:bold}
+.tax-note{background:#FFF8E6;border:1px solid #EF9F27;border-radius:8px;padding:.75rem 1rem;margin-bottom:1.25rem;font-size:12px;color:#633806;display:flex;gap:10px;align-items:flex-start}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.kpi{background:#fafafa;border:1px solid #e0e0e0;border-radius:10px;padding:1rem 1.25rem}
+.kpi-label{font-size:11px;color:#888;margin-bottom:6px;font-weight:bold;text-transform:uppercase;letter-spacing:.04em}
+.kpi-value{font-size:22px;font-weight:bold;color:#222}
+.kpi-sub{font-size:11px;color:#888;margin-top:3px}
+.cost-strip{background:#fafafa;border:1px solid #e0e0e0;border-radius:10px;padding:.9rem 1.25rem;margin-bottom:1.25rem}
+.cost-strip-title{font-size:11px;font-weight:bold;color:#666;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.cost-items{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ci .cl{font-size:11px;color:#888;margin-bottom:2px}
+.ci .cv{font-size:14px;font-weight:bold}
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid #ddd;margin-bottom:1.5rem}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:920px}
+thead th{background:#3C3C3C;color:#fff;padding:9px 10px;text-align:right;font-weight:bold;font-size:11px;white-space:nowrap}
+thead th:first-child{text-align:left}
+th.sub{background:#555;font-size:10px;color:#bbb;letter-spacing:.04em;text-transform:uppercase;padding:6px 10px;font-weight:bold}
+th.sub-blue{background:#0C447C;color:#B5D4F4;font-size:10px;letter-spacing:.04em;text-transform:uppercase;padding:6px 10px;font-weight:bold}
+th.sub-amber{background:#633806;color:#FAC775;font-size:10px;letter-spacing:.04em;text-transform:uppercase;padding:6px 10px;font-weight:bold}
+tbody tr:nth-child(odd){background:#fafafa}
+tbody tr:nth-child(even){background:#fff}
+td{padding:8px 10px;text-align:right;border-bottom:1px solid #eee;font-size:12px;white-space:nowrap;color:#333}
+td:first-child{text-align:left;font-weight:bold}
+tr:last-child td{border-bottom:none}
+.sp{color:#27500A;font-weight:bold}
+.sn{color:#A32D2D;font-weight:bold}
+.su{color:#0C447C}
+.tx{color:#854F0B}
+tr.hl{background:#FFF0F0!important}
+tr.hl td:first-child{color:#C8102E}
+tr.sq td{background:#F8F8F8!important;color:#888!important;font-style:italic}
+tr.sq td:first-child{color:#666!important;font-style:normal}
+tr.sq td.sn{color:#A32D2D!important;font-style:normal}
+tr.bl td{background:#F1EFE8!important;color:#777!important;font-style:italic}
+tr.bl td:first-child{font-style:normal;font-weight:bold;color:#666!important}
+tr.dv td{background:#3C3C3C!important;color:#999!important;font-size:10px;text-align:center!important;padding:4px 10px;letter-spacing:.08em;text-transform:uppercase;font-style:normal;font-weight:bold;border:none}
+tr.dv-sq td{background:#888!important;color:#eee!important;font-size:10px;text-align:center!important;padding:4px 10px;letter-spacing:.08em;text-transform:uppercase;font-weight:bold;border:none}
+.be-box{border:2px solid #3C3C3C;border-radius:10px;overflow:hidden}
+.be-header{background:#3C3C3C;padding:.85rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.be-header-left{display:flex;align-items:center;gap:10px}
+.be-accent{width:4px;height:36px;background:#C8102E;border-radius:2px;flex-shrink:0}
+.be-title{font-size:14px;font-weight:bold;color:#fff}
+.be-sub{font-size:11px;color:#aaa;margin-top:2px}
+.be-badge{background:#C8102E;color:#fff;font-size:10px;font-weight:bold;padding:3px 9px;border-radius:4px;white-space:nowrap}
+.be-body{padding:1.25rem}
+.be-desc{font-size:12px;color:#555;margin-bottom:1rem;line-height:1.6;border-left:3px solid #C8102E;padding-left:.75rem}
+.be-insight{background:#F1EFE8;border:1px solid #97C459;border-radius:6px;padding:.7rem 1rem;margin-bottom:1rem;font-size:12px;color:#27500A;line-height:1.5}
+.be-years{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1rem}
+.be-year{background:#fafafa;border:1px solid #ddd;border-radius:8px;padding:.9rem 1rem}
+.be-year-label{font-size:11px;color:#888;font-weight:bold;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.6rem}
+.be-fees{display:flex;gap:8px;align-items:baseline;margin-bottom:.6rem;flex-wrap:wrap}
+.be-fee-ann{font-size:22px;font-weight:bold;color:#C8102E}
+.be-fee-day{font-size:12px;color:#555;padding:2px 7px;background:#eee;border-radius:4px}
+.be-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:3px 0;border-bottom:1px solid #eee}
+.be-row:last-child{border-bottom:none}
+.be-row-label{color:#666}
+.be-row-val{font-weight:bold;color:#222}
+.be-note{font-size:11px;color:#888;background:#f5f5f5;border-radius:6px;padding:.6rem .9rem;line-height:1.5}
+.legend{display:flex;gap:16px;margin-top:1.25rem;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:11px;color:#888}
+.leg-swatch{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+@media(max-width:700px){.controls,.kpi-grid,.cost-items,.be-years{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="masthead">
+  <div class="masthead-left">
+    <div class="logo-bar"></div>
+    <div>
+      <div class="masthead-title">Parking fee &mdash; 3-year revenue model</div>
+      <div class="masthead-sub">Vanier College &nbsp;&middot;&nbsp; Safety &amp; Security Services &nbsp;&middot;&nbsp; April 2026</div>
+    </div>
+  </div>
+  <div class="masthead-badge">Management Executive Committee</div>
+</div>
+
+<div class="controls">
+  <div class="ctrl">
+    <div class="ctrl-lbl"><span class="ctrl-dot" style="background:#C8102E"></span>Annual permit fee scenario</div>
+    <div class="rg">
+      <label><input type="radio" name="ann" value="sq" id="ann-sq"> Status quo $335<span class="badge-sq">no change</span></label>
+      <label><input type="radio" name="ann" value="a" checked> Fixed $360 &rarr; $371 &rarr; $382<span class="badge-rec">staff rec</span></label>
+      <label><input type="radio" name="ann" value="b"> Fixed $370 &rarr; $381 &rarr; $393</label>
+      <label><input type="radio" name="ann" value="c"> Stepped $360 &rarr; $380 &rarr; $400</label>
+    </div>
+  </div>
+  <div class="ctrl">
+    <div class="ctrl-lbl"><span class="ctrl-dot" style="background:#3C3C3C"></span>Daily parking fee scenario</div>
+    <div class="rg">
+      <label><input type="radio" name="day" value="sq" id="day-sq"> Status quo $11<span class="badge-sq">no change</span></label>
+      <label><input type="radio" name="day" value="x" checked> Flat $12 / day</label>
+      <label><input type="radio" name="day" value="y"> Flat $15 / day</label>
+      <label><input type="radio" name="day" value="z"> Stepped $12 &rarr; $13 &rarr; $15</label>
+    </div>
+  </div>
+</div>
+
+<div class="tax-note">
+  <div style="font-size:14px;flex-shrink:0;margin-top:1px">&#9432;</div>
+  <div><strong>Annual permit revenue is subject to TPS/TVQ (14.975%).</strong> Gross revenue is the total fee collected. TPS/TVQ is remitted to the government. Net-of-tax = gross &divide; 1.14975. The 3% sustainability levy applies to the net-of-tax amount. Daily parking is not subject to this tax treatment.</div>
+</div>
+
+<div class="kpi-grid" id="kpi"></div>
+
+<div class="cost-strip">
+  <div class="cost-strip-title">Operating costs &mdash; $312,256 base in 2025&ndash;26 (incl. $7,256 tax on parking mgmt contract), compounding +3%/yr</div>
+  <div class="cost-items" id="costrow"></div>
+</div>
+
+<div class="tbl-wrap">
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2" style="text-align:left">Year</th>
+      <th rowspan="2">Ann. fee</th>
+      <th rowspan="2">Daily fee</th>
+      <th colspan="3" class="sub" style="text-align:center;border-bottom:1px solid #444">Annual permits</th>
+      <th colspan="2" class="sub" style="text-align:center;border-bottom:1px solid #444">Daily parking</th>
+      <th rowspan="2">Net revenue</th>
+      <th rowspan="2">Op. costs</th>
+      <th rowspan="2">Surplus</th>
+    </tr>
+    <tr>
+      <th class="sub">Gross rev</th>
+      <th class="sub-amber">TPS/TVQ (14.975%)</th>
+      <th class="sub-blue">Sustain. (3%)</th>
+      <th class="sub">Gross rev</th>
+      <th class="sub-blue">Sustain. (10%)</th>
+    </tr>
+  </thead>
+  <tbody id="tb"></tbody>
+</table>
+</div>
+
+<div class="be-box">
+  <div class="be-header">
+    <div class="be-header-left">
+      <div class="be-accent"></div>
+      <div>
+        <div class="be-title">Break-even scenario &mdash; minimum annual fee to cover costs</div>
+        <div class="be-sub">Daily parking stepped $12 &rarr; $13 &rarr; $14 &nbsp;&middot;&nbsp; Annual fee set to exact break-even each year</div>
+      </div>
+    </div>
+    <div class="be-badge">Reference scenario</div>
+  </div>
+  <div class="be-body">
+    <div class="be-desc">
+      This scenario answers: <em>&ldquo;If we step daily parking up by $1/year ($12 &rarr; $13 &rarr; $14), what is the minimum annual permit fee needed each year to avoid a deficit?&rdquo;</em>
+      As the daily rate carries more revenue each year, the required annual fee <strong>decreases</strong> &mdash; reducing pressure on permit holders over time.
+    </div>
+    <div class="be-insight">
+      As daily revenue increases year over year, the break-even annual fee drops from $367 in Year 1 to $333 by Year 3 &mdash; a $34 reduction in the minimum required permit fee. The daily rate progressively subsidizes the annual permit program.
+    </div>
+    <div class="be-years">
+      <div class="be-year">
+        <div class="be-year-label">2026&ndash;27</div>
+        <div class="be-fees"><span class="be-fee-ann">$367.32</span><span class="be-fee-day">$12 / day</span></div>
+        <div class="be-row"><span class="be-row-label">Annual gross rev</span><span class="be-row-val">$154,640</span></div>
+        <div class="be-row"><span class="be-row-label">TPS/TVQ remitted</span><span class="be-row-val" style="color:#854F0B">$20,141</span></div>
+        <div class="be-row"><span class="be-row-label">Sustainability (3%)</span><span class="be-row-val" style="color:#0C447C">$4,035</span></div>
+        <div class="be-row"><span class="be-row-label">Daily gross rev</span><span class="be-row-val">$212,400</span></div>
+        <div class="be-row"><span class="be-row-label">Daily sustain. (10%)</span><span class="be-row-val" style="color:#0C447C">$21,240</span></div>
+        <div class="be-row"><span class="be-row-label">Net revenue</span><span class="be-row-val">$321,624</span></div>
+        <div class="be-row"><span class="be-row-label">Op. costs</span><span class="be-row-val">$321,624</span></div>
+        <div class="be-row"><span class="be-row-label">Surplus</span><span class="be-row-val" style="color:#888">$0</span></div>
+      </div>
+      <div class="be-year">
+        <div class="be-year-label">2027&ndash;28</div>
+        <div class="be-fees"><span class="be-fee-ann">$349.63</span><span class="be-fee-day">$13 / day</span></div>
+        <div class="be-row"><span class="be-row-label">Annual gross rev</span><span class="be-row-val">$147,194</span></div>
+        <div class="be-row"><span class="be-row-label">TPS/TVQ remitted</span><span class="be-row-val" style="color:#854F0B">$19,171</span></div>
+        <div class="be-row"><span class="be-row-label">Sustainability (3%)</span><span class="be-row-val" style="color:#0C447C">$3,841</span></div>
+        <div class="be-row"><span class="be-row-label">Daily gross rev</span><span class="be-row-val">$230,100</span></div>
+        <div class="be-row"><span class="be-row-label">Daily sustain. (10%)</span><span class="be-row-val" style="color:#0C447C">$23,010</span></div>
+        <div class="be-row"><span class="be-row-label">Net revenue</span><span class="be-row-val">$331,272</span></div>
+        <div class="be-row"><span class="be-row-label">Op. costs</span><span class="be-row-val">$331,272</span></div>
+        <div class="be-row"><span class="be-row-label">Surplus</span><span class="be-row-val" style="color:#888">$0</span></div>
+      </div>
+      <div class="be-year">
+        <div class="be-year-label">2028&ndash;29</div>
+        <div class="be-fees"><span class="be-fee-ann">$332.76</span><span class="be-fee-day">$14 / day</span></div>
+        <div class="be-row"><span class="be-row-label">Annual gross rev</span><span class="be-row-val">$140,093</span></div>
+        <div class="be-row"><span class="be-row-label">TPS/TVQ remitted</span><span class="be-row-val" style="color:#854F0B">$18,246</span></div>
+        <div class="be-row"><span class="be-row-label">Sustainability (3%)</span><span class="be-row-val" style="color:#0C447C">$3,655</span></div>
+        <div class="be-row"><span class="be-row-label">Daily gross rev</span><span class="be-row-val">$247,800</span></div>
+        <div class="be-row"><span class="be-row-label">Daily sustain. (10%)</span><span class="be-row-val" style="color:#0C447C">$24,780</span></div>
+        <div class="be-row"><span class="be-row-label">Net revenue</span><span class="be-row-val">$341,211</span></div>
+        <div class="be-row"><span class="be-row-label">Op. costs</span><span class="be-row-val">$341,211</span></div>
+        <div class="be-row"><span class="be-row-label">Surplus</span><span class="be-row-val" style="color:#888">$0</span></div>
+      </div>
+    </div>
+    <div class="be-note">
+      These are the mathematical minimums. Rounding to the nearest $5 is recommended: <strong>$370 / $350 / $335</strong>.
+      By Year 3, the break-even annual fee ($332.76) is actually <em>below</em> the current rate of $335 &mdash; meaning the stepped daily increase fully offsets cost growth and could allow the annual permit fee to remain flat or even decrease in Year 3.
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="leg-item"><div class="leg-swatch" style="background:#F1EFE8;border:1px solid #B4B2A9"></div>2025&ndash;26 baseline</div>
+  <div class="leg-item"><div class="leg-swatch" style="background:#F8F8F8;border:1px solid #ccc"></div>Status quo (no change)</div>
+  <div class="leg-item"><div class="leg-swatch" style="background:#FFF0F0;border:1px solid #F09595"></div>Staff recommendation</div>
+  <div class="leg-item"><div class="leg-swatch" style="background:#FFF8E6;border:1px solid #EF9F27"></div>Tax remitted (TPS/TVQ)</div>
+  <div class="leg-item"><div class="leg-swatch" style="background:#E6F1FB;border:1px solid #85B7EB"></div>Sustainability levy</div>
+  <div class="leg-item"><div class="leg-swatch" style="background:#EAF3DE;border:1px solid #97C459"></div>Surplus</div>
+  <div class="leg-item"><div class="leg-swatch" style="background:#FCEBEB;border:1px solid #F09595"></div>Deficit</div>
+</div>
+
+</div>
+
+<script>
+const P=421,T=17700,TAX=1.14975;
+const YRS=["2026\u201327","2027\u201328","2028\u201329"];
+const C0=312256;
+const CA=[0,1,2,3].map(i=>Math.round(C0*Math.pow(1.03,i)));
+const AF={sq:[335,335,335],a:[360,371,382],b:[370,381,393],c:[360,380,400]};
+const DF={sq:[11,11,11],x:[12,12,12],y:[15,15,15],z:[12,13,15]};
+const f=n=>"$"+Math.round(n).toLocaleString("en-CA");
+
+document.getElementById("costrow").innerHTML=
+  [["2025\u201326 (base)",CA[0],true],["2026\u201327",CA[1],false],["2027\u201328",CA[2],false],["2028\u201329",CA[3],false]]
+  .map(([l,v,b])=>`<div class="ci"><div class="cl">${l}</div><div class="cv" style="color:${b?"#C8102E":"#555"}">${f(v)}</div></div>`)
+  .join("");
+
+const BAG=P*335,BAG_TAX=BAG-BAG/TAX,BAG_NET=BAG/TAX,BAG_SUS=BAG_NET*0.03,BAG_AVAIL=BAG_NET*0.97;
+const BDG=T*11,BDG_SUS=BDG*0.10,BDG_AVAIL=BDG*0.90;
+const BNET=BAG_AVAIL+BDG_AVAIL,BSURP=BNET-CA[0];
+
+function render(){
+  const ak=document.querySelector("input[name=ann]:checked").value;
+  const dk=document.querySelector("input[name=day]:checked").value;
+  const af=AF[ak],df=DF[dk],isSq=ak==="sq"&&dk==="sq",isRec=ak==="a"&&dk==="x";
+  const rows=YRS.map((yr,i)=>{
+    const ag=P*af[i],ag_tax=ag-ag/TAX,ag_net=ag/TAX,ag_sus=ag_net*0.03,ag_avail=ag_net*0.97;
+    const dg=T*df[i],dg_sus=dg*0.10,dg_avail=dg*0.90;
+    const net=ag_avail+dg_avail,sur=net-CA[i+1];
+    return{yr,af:af[i],df:df[i],ag,ag_tax,ag_sus,dg,dg_sus,net,sur};
+  });
+  document.getElementById("tb").innerHTML=
+    `<tr class="bl">
+      <td>2025\u201326&nbsp;<span style="font-size:10px;background:#D3D1C7;color:#444;padding:1px 5px;border-radius:3px;font-style:normal">current</span></td>
+      <td>${f(335)}</td><td>${f(11)}</td>
+      <td>${f(BAG)}</td><td class="tx">${f(BAG_TAX)}</td><td class="su">${f(BAG_SUS)}</td>
+      <td>${f(BDG)}</td><td class="su">${f(BDG_SUS)}</td>
+      <td><strong>${f(BNET)}</strong></td><td>${f(CA[0])}</td>
+      <td class="${BSURP>=0?"sp":"sn"}">${BSURP>=0?"+":""}${f(BSURP)}</td>
+    </tr>
+    ${isSq?`<tr class="dv-sq"><td colspan="11">status quo projection \u2014 no fee change applied</td></tr>`:
+           `<tr class="dv"><td colspan="11">projected years \u2014 ${isRec?"staff recommendation selected":"custom scenario selected"}</td></tr>`}`+
+    rows.map(r=>`<tr${isSq?' class="sq"':isRec?' class="hl"':""}>
+      <td>${r.yr}</td><td>${f(r.af)}</td><td>${f(r.df)}</td>
+      <td>${f(r.ag)}</td><td class="tx">${f(r.ag_tax)}</td><td class="su">${f(r.ag_sus)}</td>
+      <td>${f(r.dg)}</td><td class="su">${f(r.dg_sus)}</td>
+      <td><strong>${f(r.net)}</strong></td>
+      <td style="color:#888">${f(CA[rows.indexOf(r)+1])}</td>
+      <td class="${r.sur>=0?"sp":"sn"}">${r.sur>=0?"+":""}${f(r.sur)}</td>
+    </tr>`).join("");
+  const tnet=rows.reduce((s,r)=>s+r.net,0);
+  const tsur=rows.reduce((s,r)=>s+r.sur,0);
+  const tsus=rows.reduce((s,r)=>s+r.ag_sus+r.dg_sus,0);
+  const minsur=Math.min(...rows.map(r=>r.sur));
+  document.getElementById("kpi").innerHTML=`
+    <div class="kpi"><div class="kpi-label">3-yr net revenue</div><div class="kpi-value">${f(tnet)}</div><div class="kpi-sub">after tax &amp; sustainability levies</div></div>
+    <div class="kpi"><div class="kpi-label">Sustainability collected</div><div class="kpi-value" style="color:#0C447C">${f(tsus)}</div><div class="kpi-sub">3-year total to fund</div></div>
+    <div class="kpi"><div class="kpi-label">3-yr total surplus</div><div class="kpi-value" style="color:${tsur>=0?"#27500A":"#A32D2D"}">${tsur>=0?"+":""}${f(tsur)}</div><div class="kpi-sub">above operating costs</div></div>
+    <div class="kpi"><div class="kpi-label">Worst-case year</div><div class="kpi-value" style="color:${minsur>=0?"#27500A":"#A32D2D"}">${minsur>=0?"+":""}${f(minsur)}</div><div class="kpi-sub">${minsur<0?"deficit in year 3":"minimum annual cushion"}</div></div>
+  `;
+}
+document.querySelectorAll("input[type=radio]").forEach(r=>r.addEventListener("change",render));
+document.getElementById("ann-sq").addEventListener("change",()=>{document.getElementById("day-sq").checked=true;render();});
+document.getElementById("day-sq").addEventListener("change",()=>{document.getElementById("ann-sq").checked=true;render();});
+render();
+</script>
+</body>
+</html>
