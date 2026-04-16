@@ -83,6 +83,12 @@ tr.dv-sq td{background:#888!important;color:#eee!important;font-size:10px;text-a
 .legend{display:flex;gap:16px;margin-top:1.25rem;flex-wrap:wrap}
 .leg-item{display:flex;align-items:center;gap:6px;font-size:11px;color:#888}
 .leg-swatch{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.manual-inputs{display:none;flex-direction:column;gap:6px;margin-top:6px;padding-left:23px}
+.manual-inputs.active{display:flex}
+.mi-row{display:flex;align-items:center;gap:8px}
+.mi-label{color:#888;font-size:11px;width:52px;flex-shrink:0}
+.mi-input{width:72px;padding:3px 7px;border:1px solid #ccc;border-radius:4px;font-size:12px;text-align:right;color:#333}
+.mi-input:focus{outline:none;border-color:#C8102E;box-shadow:0 0 0 2px rgba(200,16,46,.12)}
 @media(max-width:700px){.controls,.kpi-grid,.cost-items,.be-years{grid-template-columns:1fr}}
 </style>
 </head>
@@ -108,6 +114,12 @@ tr.dv-sq td{background:#888!important;color:#eee!important;font-size:10px;text-a
       <label><input type="radio" name="ann" value="a" checked> Fixed $360 &rarr; $371 &rarr; $382<span class="badge-rec">staff rec</span></label>
       <label><input type="radio" name="ann" value="b"> Fixed $370 &rarr; $381 &rarr; $393</label>
       <label><input type="radio" name="ann" value="c"> Stepped $360 &rarr; $380 &rarr; $400</label>
+      <label><input type="radio" name="ann" value="m"> Manual input</label>
+      <div class="manual-inputs" id="ann-manual">
+        <div class="mi-row"><span class="mi-label">2026&ndash;27</span><input type="number" class="mi-input" id="ann-m0" value="360" min="0" max="9999" step="1"><span style="font-size:11px;color:#aaa">/ permit</span></div>
+        <div class="mi-row"><span class="mi-label">2027&ndash;28</span><input type="number" class="mi-input" id="ann-m1" value="360" min="0" max="9999" step="1"><span style="font-size:11px;color:#aaa">/ permit</span></div>
+        <div class="mi-row"><span class="mi-label">2028&ndash;29</span><input type="number" class="mi-input" id="ann-m2" value="360" min="0" max="9999" step="1"><span style="font-size:11px;color:#aaa">/ permit</span></div>
+      </div>
     </div>
   </div>
   <div class="ctrl">
@@ -117,6 +129,12 @@ tr.dv-sq td{background:#888!important;color:#eee!important;font-size:10px;text-a
       <label><input type="radio" name="day" value="x" checked> Flat $12 / day</label>
       <label><input type="radio" name="day" value="y"> Flat $15 / day</label>
       <label><input type="radio" name="day" value="z"> Stepped $12 &rarr; $13 &rarr; $15</label>
+      <label><input type="radio" name="day" value="m"> Manual input</label>
+      <div class="manual-inputs" id="day-manual">
+        <div class="mi-row"><span class="mi-label">2026&ndash;27</span><input type="number" class="mi-input" id="day-m0" value="12" min="0" max="999" step="0.25"><span style="font-size:11px;color:#aaa">/ day</span></div>
+        <div class="mi-row"><span class="mi-label">2027&ndash;28</span><input type="number" class="mi-input" id="day-m1" value="12" min="0" max="999" step="0.25"><span style="font-size:11px;color:#aaa">/ day</span></div>
+        <div class="mi-row"><span class="mi-label">2028&ndash;29</span><input type="number" class="mi-input" id="day-m2" value="12" min="0" max="999" step="0.25"><span style="font-size:11px;color:#aaa">/ day</span></div>
+      </div>
     </div>
   </div>
 </div>
@@ -255,7 +273,11 @@ const BNET=BAG_AVAIL+BDG_AVAIL,BSURP=BNET-CA[0];
 function render(){
   const ak=document.querySelector("input[name=ann]:checked").value;
   const dk=document.querySelector("input[name=day]:checked").value;
-  const af=AF[ak],df=DF[dk],isSq=ak==="sq"&&dk==="sq",isRec=ak==="a"&&dk==="x";
+  document.getElementById("ann-manual").classList.toggle("active",ak==="m");
+  document.getElementById("day-manual").classList.toggle("active",dk==="m");
+  const af=ak==="m"?[0,1,2].map(i=>parseFloat(document.getElementById("ann-m"+i).value)||0):AF[ak];
+  const df=dk==="m"?[0,1,2].map(i=>parseFloat(document.getElementById("day-m"+i).value)||0):DF[dk];
+  const isSq=ak==="sq"&&dk==="sq",isRec=ak==="a"&&dk==="x",isManual=ak==="m"||dk==="m";
   const rows=YRS.map((yr,i)=>{
     const ag=P*af[i],ag_tax=ag-ag/TAX,ag_net=ag/TAX,ag_sus=ag_net*0.03,ag_avail=ag_net*0.97;
     const dg=T*df[i],dg_sus=dg*0.10,dg_avail=dg*0.90;
@@ -272,7 +294,7 @@ function render(){
       <td class="${BSURP>=0?"sp":"sn"}">${BSURP>=0?"+":""}${f(BSURP)}</td>
     </tr>
     ${isSq?`<tr class="dv-sq"><td colspan="11">status quo projection \u2014 no fee change applied</td></tr>`:
-           `<tr class="dv"><td colspan="11">projected years \u2014 ${isRec?"staff recommendation selected":"custom scenario selected"}</td></tr>`}`+
+           `<tr class="dv"><td colspan="11">projected years \u2014 ${isRec?"staff recommendation selected":isManual?"manual input scenario":"custom scenario selected"}</td></tr>`}`+
     rows.map(r=>`<tr${isSq?' class="sq"':isRec?' class="hl"':""}>
       <td>${r.yr}</td><td>${f(r.af)}</td><td>${f(r.df)}</td>
       <td>${f(r.ag)}</td><td class="tx">${f(r.ag_tax)}</td><td class="su">${f(r.ag_sus)}</td>
@@ -293,6 +315,7 @@ function render(){
   `;
 }
 document.querySelectorAll("input[type=radio]").forEach(r=>r.addEventListener("change",render));
+document.querySelectorAll(".mi-input").forEach(inp=>inp.addEventListener("input",render));
 document.getElementById("ann-sq").addEventListener("change",()=>{document.getElementById("day-sq").checked=true;render();});
 document.getElementById("day-sq").addEventListener("change",()=>{document.getElementById("ann-sq").checked=true;render();});
 render();
